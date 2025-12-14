@@ -1,8 +1,12 @@
-import { Button, buttonVariants } from "@/components/ui/button"
-import { ArrowRight } from "lucide-react"
+"use client";
+
+import { buttonVariants } from "@/components/ui/button";
+import { SignUpButton, useAuth } from "@clerk/nextjs";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 export function CTA() {
+  const { userId } = useAuth();
   return (
     <section className="py-20 lg:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -12,23 +16,28 @@ export function CTA() {
               Ready to organize your code?
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-lg text-primary-foreground/80">
-              Join thousands of developers who save hours every week with EZsnippet.
+              Join thousands of developers who save hours every week with
+              EZsnippet.
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Link
-              href={"/auth/sign-up"}
-              className={`${buttonVariants({
-                size: "lg",
-                variant: "secondary",
-              })}`}
-            >
-              Get Started Free
-              <ArrowRight className="h-4 w-4" />
-            </Link>
+              {userId ? (
+                <Link
+                  className={`${buttonVariants({ variant: "secondary" })}`}
+                  href={"/snippets"}
+                >
+                  Go to Snippets
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              ) : (
+                <div className={`${buttonVariants({ variant: "secondary" })}`}>
+                  <SignUpButton>Get Started Free</SignUpButton>
+                  <ArrowRight className="h-4 w-4" />
+                </div>
+              )}
             </div>
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }

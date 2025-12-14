@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { ClerkProvider } from "@clerk/nextjs";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,10 +17,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "ezSnippet | Created by Austen",
-  description: "Create, organize, and share reusable code snippets with syntax highlighting, AI-powered explanations, and fast search.",
-  icons:{
-    icon:"/ezsnippet.svg"
-  }
+  description:
+    "Create, organize, and share reusable code snippets with syntax highlighting, AI-powered explanations, and fast search.",
+  icons: {
+    icon: "/ezsnippet.svg",
+  },
 };
 
 export default function RootLayout({
@@ -32,15 +34,17 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <main className="w-full selection:bg-blue-700">{children}</main>
-          <Toaster position="bottom-center" closeButton />
-        </ThemeProvider>
+        <ClerkProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <main className="w-full selection:bg-blue-700">{children}</main>
+            <Toaster position="bottom-center" closeButton />
+          </ThemeProvider>
+        </ClerkProvider>
       </body>
     </html>
   );

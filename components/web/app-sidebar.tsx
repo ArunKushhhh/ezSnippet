@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
   Sidebar,
   SidebarContent,
@@ -13,18 +12,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "../ui/sidebar";
-import {
-  Calendar,
-  Check,
-  ChevronsUpDown,
-  Home,
-  Inbox,
-  Search,
-  Settings,
-  Tag,
-} from "lucide-react";
-import { Button } from "../ui/button";
+import { Tag } from "lucide-react";
+import { Button, buttonVariants } from "../ui/button";
 import Link from "next/link";
+import { UserButton, useUser } from "@clerk/nextjs";
 
 const snippets = [
   {
@@ -35,12 +26,13 @@ const snippets = [
 ];
 
 export function AppSidebar() {
+  const { user } = useUser();
   return (
     <Sidebar
       // collapsible="icon"
       className="mt-17 px-12 py-8 h-[calc(100%-68px)] min-w-sm border-none"
     >
-      <SidebarHeader className="px-0 py-4 ">
+      <SidebarHeader className="px-0 py-4">
         <Button
           variant="ghost"
           role="combobox"
@@ -80,7 +72,23 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter></SidebarFooter>
+      {user && (
+        <SidebarFooter className="px-0 py-4">
+          <div
+            className={`flex justify-start items-center gap-2 h-auto py-4 bg-card ${buttonVariants(
+              { variant: "ghost" }
+            )}`}
+          >
+            <UserButton />
+            <div>
+              <p className="text-sm font-medium">{user?.fullName}</p>
+              <p className="text-muted-foreground text-xs">
+                {user?.emailAddresses[0].emailAddress}
+              </p>
+            </div>
+          </div>
+        </SidebarFooter>
+      )}
     </Sidebar>
   );
 }

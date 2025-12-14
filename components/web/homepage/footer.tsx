@@ -1,5 +1,5 @@
 import { buttonVariants } from "@/components/ui/button";
-import { Code2, Github, Star } from "lucide-react";
+import { Github, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
