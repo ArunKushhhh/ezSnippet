@@ -1,6 +1,6 @@
 "use client";
 
-import { snippetSchema } from "@/app/schema/snippet";
+import { snippetSchema } from "@/app/schemas/snippet";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -45,15 +45,13 @@ const languages = [
   "markdown",
 ];
 
-type SnippetFormValues = z.infer<typeof snippetSchema>;
-
 export default function CreateSnippetPage() {
   const {
     allSnippetsObject: { allSnippets, setAllSnippets },
   } = useGlobalContext();
   const router = useRouter();
 
-  const form = useForm<SnippetFormValues>({
+  const form = useForm<z.infer<typeof snippetSchema>>({
     resolver: zodResolver(snippetSchema),
     defaultValues: {
       title: "",
@@ -65,7 +63,7 @@ export default function CreateSnippetPage() {
     },
   });
 
-  const onSubmit = (data: SnippetFormValues) => {
+  const onSubmit = (data: z.infer<typeof snippetSchema>) => {
     const newSnippet = {
       id: `snippet-${Date.now()}`,
       title: data.title,
@@ -75,6 +73,7 @@ export default function CreateSnippetPage() {
       code: data.code,
       tags: data.tags,
       isSaved: false,
+      isTrash: false,
       createdAt: new Date().toLocaleDateString(),
     };
 
@@ -87,7 +86,7 @@ export default function CreateSnippetPage() {
   return (
     <div className="space-y-8">
       {/* header */}
-      <div  className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4">
         <h1 className="text-4xl font-semibold">Create New Snippet</h1>
         <p className="text-muted-foreground">
           Add a new snippet to your collection.

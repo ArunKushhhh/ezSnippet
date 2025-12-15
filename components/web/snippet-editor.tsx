@@ -28,7 +28,7 @@ import {
 } from "../ui/dropdown-menu";
 import { Separator } from "../ui/separator";
 import { Textarea } from "../ui/textarea";
-import { snippetSchema } from "@/app/schema/snippet";
+import { snippetSchema } from "@/app/schemas/snippet";
 import { TagsInput } from "./tags-input";
 
 const languages = [
@@ -263,6 +263,8 @@ export function SnippetEditor() {
                 )}
               />
             </FieldGroup>
+
+            <Separator />
 
             {/* cancel and save btn */}
             <div className="flex justify-end gap-2">
