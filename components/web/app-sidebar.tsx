@@ -26,6 +26,7 @@ export function AppSidebar() {
   // Filter snippets
   const trashSnippets = allSnippets.filter((s: Snippet) => s.isTrash);
   const activeSnippets = allSnippets.filter((s: Snippet) => !s.isTrash);
+  // Ensure saved snippets are NOT in trash
   const savedSnippets = activeSnippets.filter((s: Snippet) => s.isSaved);
 
   // Group by language
@@ -96,7 +97,7 @@ export function AppSidebar() {
           </SidebarGroupLabel>
           <SidebarGroupContent className="pr-4">
             <SidebarMenu>
-              {savedSnippets.slice(0, 5).map((snippet) => (
+              {savedSnippets.map((snippet) => (
                 <SidebarMenuItem key={snippet.id}>
                   <SidebarMenuButton
                     className={`hover:bg-transparent text-muted-foreground hover:text-foreground truncate`}

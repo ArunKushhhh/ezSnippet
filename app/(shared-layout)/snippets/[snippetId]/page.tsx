@@ -19,17 +19,18 @@ import { useGlobalContext } from "@/components/web/context-api";
 import { CopyButton } from "@/components/web/copy-button";
 import { SnippetEditor } from "@/components/web/snippet-editor";
 import { Bookmark, PencilLine, RefreshCw, Trash } from "lucide-react";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import prism from "react-syntax-highlighter/dist/esm/styles/prism/prism";
 
 export default function SnippetPage() {
   const { snippetId } = useParams();
+  const router = useRouter();
   const {
     openSnippetEditorObject: { openSnippetEditor, setOpenSnippetEditor },
     selectedSnippetObject: { selectedSnippet, setSelectedSnippet },
-    allSnippetsObject: { allSnippets },
+    allSnippetsObject: { allSnippets, setAllSnippets },
   } = useGlobalContext();
 
   const [snippet, setSnippet] = useState<Snippet | undefined>(undefined);
@@ -49,6 +50,46 @@ export default function SnippetPage() {
       setSnippet(selectedSnippet);
     }
   }, [selectedSnippet]);
+
+  function handleSave() {
+    if (!snippet || snippet.isTrash) return;
+
+    const updatedSnippets = allSnippets.map((s) => {
+      if (s.id === snippet.id) {
+        return { ...s, isSaved: !s.isSaved };
+      }
+      return s;
+    });
+
+    setAllSnippets(updatedSnippets);
+  }
+
+  function handleDelete() {
+    if (!snippet) return;
+
+    const updatedSnippets = allSnippets.map((s) => {
+      if (s.id === snippet.id) {
+        if (s.isTrash) {
+          // Restore
+          return { ...s, isTrash: false, isSaved: false };
+        }
+        // Trash
+        return { ...s, isTrash: true, isSaved: false };
+      }
+      return s;
+    });
+    setAllSnippets(updatedSnippets);
+    // If we just trashed it, user might expect to go back, but staying on page is also fine.
+    // Let's stay on page so they can restore if accident.
+  }
+
+  function handleDeleteForever() {
+    if (!snippet) return;
+    const updatedSnippets = allSnippets.filter((s) => s.id !== snippet.id);
+    setAllSnippets(updatedSnippets);
+    router.push("/snippets");
+  }
+
   return (
     <div className="flex gap-6">
       <div className={`space-y-8 ${openSnippetEditor ? "w-1/2" : "w-full"}`}>
@@ -57,7 +98,8 @@ export default function SnippetPage() {
           <h1 className="text-4xl font-semibold">{snippet?.title}</h1>
           <p className="text-muted-foreground">{snippet?.description}</p>
           <Badge variant="outline" className="text-muted-foreground">
-            Created at: {snippet?.createdAt}
+            {snippet?.isTrash ? "Deleted At: " : "Created At: "}
+            {snippet?.createdAt}
           </Badge>
         </div>
 
@@ -78,18 +120,20 @@ export default function SnippetPage() {
           <div className="flex justify-between items-center">
             {/* save and delete buttons */}
             <div className="flex gap-2">
-              <Button
-                className={`${buttonVariants({
-                  variant: "secondary",
-                })} border`}
-              >
-                <Bookmark
-                  className={`${snippet?.isSaved ? "text-primary" : null}`}
-                />
-                <p className="hidden md:block">
-                  {snippet?.isSaved ? "Saved" : "Save"}
-                </p>
-              </Button>
+              {!snippet?.isTrash && (
+                <Button
+                  className={`${buttonVariants({
+                    variant: "outline",
+                  })} border ${snippet?.isSaved ? "text-chart-2" : null}`}
+                  onClick={handleSave}
+                >
+                  <Bookmark />
+                  <p className="hidden md:block">
+                    {snippet?.isSaved ? "Saved" : "Save"}
+                  </p>
+                </Button>
+              )}
+
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <Button
@@ -129,12 +173,41 @@ export default function SnippetPage() {
                       className={`${buttonVariants({
                         variant: snippet?.isTrash ? "default" : "destructive",
                       })}`}
+                      onClick={handleDelete}
                     >
                       {snippet?.isTrash ? "Restore" : "Delete"}
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>
+
+              {snippet?.isTrash && (
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="destructive" size="icon">
+                      <Trash />
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Delete forever?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently
+                        delete the snippet.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        className={buttonVariants({ variant: "destructive" })}
+                        onClick={handleDeleteForever}
+                      >
+                        Delete Forever
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              )}
             </div>
 
             {/* copy and edit buttons */}
@@ -147,14 +220,18 @@ export default function SnippetPage() {
               >
                 <PencilLine />
               </Button>
-              <CopyButton codeExample={snippet?.code} />
+              <CopyButton codeExample={snippet?.code || ""} />
             </div>
           </div>
 
           {/* tags */}
           <div className="flex gap-2 flex-wrap">
             {snippet?.tags?.map((tag) => (
-              <Badge key={tag} variant="outline" className="px-4 py-1">
+              <Badge
+                key={tag}
+                variant="outline"
+                className="px-4 py-1 capitalize"
+              >
                 {tag}
               </Badge>
             ))}
@@ -165,7 +242,7 @@ export default function SnippetPage() {
 
         {/* code */}
         <SyntaxHighlighter
-          language="javascript"
+          language={snippet?.language}
           style={prism}
           showLineNumbers
           showInlineLineNumbers

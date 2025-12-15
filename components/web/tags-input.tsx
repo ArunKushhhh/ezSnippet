@@ -77,7 +77,7 @@ export function TagsInput({
 
           {/* selected tags */}
           {value.map((tag) => (
-            <Badge key={tag} variant="secondary" className="gap-1">
+            <Badge key={tag} variant="secondary" className="gap-1 capitalize">
               {tag}
               <div
                 className="ring-offset-background rounded-full outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 cursor-pointer"
