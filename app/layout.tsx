@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { ClerkProvider } from "@clerk/nextjs";
+import GlobalContextProvider from "@/components/web/context-api";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,18 +33,20 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased selection:text-white`}
       >
         <ClerkProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <main className="w-full selection:bg-blue-700">{children}</main>
-            <Toaster position="bottom-center" closeButton />
-          </ThemeProvider>
+          <GlobalContextProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <main className="w-full selection:bg-blue-700">{children}</main>
+              <Toaster position="bottom-center" closeButton />
+            </ThemeProvider>
+          </GlobalContextProvider>
         </ClerkProvider>
       </body>
     </html>

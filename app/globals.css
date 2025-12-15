@@ -2,17 +2,7 @@
 @import "tw-animate-css";
 
 ::-webkit-scrollbar {
-  width: 6px;
-  max-height: 40px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: var(--muted-foreground);
-  border-radius: 8px;
+  display: none;
 }
 
 @custom-variant dark (&:is(.dark *));

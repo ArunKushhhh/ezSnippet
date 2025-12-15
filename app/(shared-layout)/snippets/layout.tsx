@@ -1,25 +1,32 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/web/app-sidebar";
-// import { cookies } from "next/headers";
+import { Crumbs } from "@/components/web/crumbs";
+import { cookies } from "next/headers";
 
 // const SIDEBAR_KEYBOARD_SHORTCUT = "b"
 
-export default function SnippetLayout({
+export default async function SnippetLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  //   const cookieStore = await cookies();
-  //   const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
+  const cookieStore = await cookies();
+  const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
   return (
     <SidebarProvider
-      // defaultOpen={defaultOpen}
-      open
+      defaultOpen={defaultOpen}
+      // open
     >
-      <div className="relative min-w-sm">
+      <div className="relative hidden md:flex min-w-1/4">
         <AppSidebar />
       </div>
-      <main>{children}</main>
+      <main className="py-20 space-y-4 flex-1 px-4 md:pr-12">
+        <div className="flex gap-4 items-center">
+          <SidebarTrigger className="flex md:hidden" />
+          <Crumbs />
+        </div>
+        {children}
+      </main>
     </SidebarProvider>
   );
 }

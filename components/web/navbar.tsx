@@ -5,6 +5,9 @@ import { buttonVariants } from "../ui/button";
 import { SearchInput } from "./search-input";
 import { SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
+import { useGlobalContext } from "./context-api";
+import { NavMenu } from "./nav-menu";
+import { Plus } from "lucide-react";
 
 export async function Navbar() {
   const { isAuthenticated } = await auth();
@@ -28,16 +31,7 @@ export async function Navbar() {
 
         {/* nav tabs */}
         <nav className="hidden md:flex">
-          <ul>
-            <li>
-              <Link
-                href={"/snippets"}
-                className={`text-muted-foreground hover:text-foreground duration-100`}
-              >
-                Snippets
-              </Link>
-            </li>
-          </ul>
+          {isAuthenticated ? <NavMenu /> : null}
         </nav>
       </div>
 
@@ -49,7 +43,16 @@ export async function Navbar() {
         {/* auth buttons */}
         {/* if user authenticated display logout btn */}
         {isLoading ? null : isAuthenticated ? (
-          <UserButton />
+          <>
+            <Link
+              href={"/snippets/create"}
+              className={`${buttonVariants({ variant: "default" })}`}
+            >
+              <Plus />
+              <p className="hidden md:flex">Create Snippet</p>
+            </Link>
+            <UserButton />
+          </>
         ) : (
           // if user not authenticated, display login and signup btn
           <>

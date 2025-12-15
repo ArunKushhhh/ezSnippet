@@ -1,9 +1,7 @@
-"use client"
-
-import { useState } from "react"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Copy, Check, Sparkles } from "lucide-react"
+import { Sparkles } from "lucide-react"
+import { CopyButton } from "../copy-button";
 
 const codeExample = `// React Hook for debouncing values
 import { useState, useEffect } from 'react';
@@ -23,14 +21,6 @@ export function useDebounce<T>(value: T, delay: number): T {
 }`
 
 export function CodePreview() {
-  const [copied, setCopied] = useState(false)
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(codeExample)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
-
   return (
     <div className="mx-auto grid max-w-5xl gap-6 lg:grid-cols-2">
       {/* Code Block */}
@@ -44,12 +34,7 @@ export function CodePreview() {
             </div>
             <span className="font-mono text-sm text-muted-foreground">useDebounce.tsx</span>
           </div>
-          <button
-            onClick={handleCopy}
-            className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-          >
-            {copied ? <Check className="h-4 w-4 text-primary" /> : <Copy className="h-4 w-4" />}
-          </button>
+          <CopyButton codeExample={codeExample} />
         </div>
         <pre className="overflow-x-auto p-4 font-mono text-sm leading-relaxed">
           <code className="text-muted-foreground">
