@@ -20,7 +20,7 @@ export default async function SnippetLayout({
       <div className="relative hidden md:flex min-w-1/4">
         <AppSidebar />
       </div>
-      <main className="py-20 space-y-4 flex-1 px-4 md:pr-12">
+      <main className="py-20 space-y-4 flex-1 px-4 md:pr-12 overflow-x-hidden">
         <div className="flex gap-4 items-center">
           <SidebarTrigger className="flex md:hidden" />
           <Crumbs />

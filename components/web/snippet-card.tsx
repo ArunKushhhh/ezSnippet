@@ -102,23 +102,26 @@ export default function SnippetCard({ snippet }: { snippet: Snippet }) {
         <p className="whitespace-pre-wrap line-clamp-5 text-muted-foreground">
           {snippet.body}
         </p>
-        <SyntaxHighlighter
-          language={snippet.language}
-          style={prism}
-          showLineNumbers
-          showInlineLineNumbers
-          customStyle={{
-            backgroundColor: "var(--secondary)",
-            border: "1px solid var(--border)",
-            overflow: "auto",
-            display: "-webkit-box",
-            WebkitBoxOrient: "vertical",
-            WebkitLineClamp: "8",
-            fontSize: "14px",
-            borderRadius: "8px",
-          }}
-          children={snippet.code}
-        />
+        <div>
+          <p className="text-xs text-muted-foreground capitalize">{snippet.language}</p>
+          <SyntaxHighlighter
+            language={snippet.language}
+            style={prism}
+            showLineNumbers
+            showInlineLineNumbers
+            customStyle={{
+              backgroundColor: "var(--secondary)",
+              border: "1px solid var(--border)",
+              overflow: "auto",
+              display: "-webkit-box",
+              WebkitBoxOrient: "vertical",
+              WebkitLineClamp: "8",
+              fontSize: "14px",
+              borderRadius: "8px",
+            }}
+            children={snippet.code}
+          />
+        </div>
       </CardContent>
       <Separator />
       <CardFooter className="p-0 flex justify-between items-center">

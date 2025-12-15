@@ -97,7 +97,7 @@ export default function SnippetPage() {
         <div className="flex flex-col gap-4">
           <h1 className="text-4xl font-semibold">{snippet?.title}</h1>
           <p className="text-muted-foreground">{snippet?.description}</p>
-          <Badge variant="outline" className="text-muted-foreground">
+          <Badge variant={snippet?.isTrash ? "destructive" : "outline"}>
             {snippet?.isTrash ? "Deleted At: " : "Created At: "}
             {snippet?.createdAt}
           </Badge>

@@ -49,7 +49,7 @@ export function AppSidebar() {
       // collapsible="icon"
       className="mt-17 px-12 py-8 h-[calc(100%-68px)] min-w-1/4 border-none"
     >
-      <SidebarHeader className="px-0 py-4">
+      <SidebarHeader className="px-4 md:px-0 py-4">
         <Button
           variant="ghost"
           role="combobox"
@@ -68,7 +68,7 @@ export function AppSidebar() {
       </SidebarHeader>
       <SidebarContent>
         {/* All Snippets List*/}
-        <SidebarGroup>
+        <SidebarGroup className="px-4 md:px-0">
           <SidebarGroupLabel className="text-primary text-sm hover:text-foreground">
             <Link href="/snippets">Snippets</Link>
           </SidebarGroupLabel>

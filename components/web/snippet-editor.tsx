@@ -129,7 +129,7 @@ export function SnippetEditor() {
         <div className="flex gap-2 items-center">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size={"sm"} className="p-0">
+              <Button variant="ghost" size={"sm"} className="p-0 capitalize">
                 <p>{selectedLanguage || "Select Language"}</p>
                 <ChevronDown />
               </Button>
@@ -144,6 +144,7 @@ export function SnippetEditor() {
                 <DropdownMenuItem
                   key={language}
                   onClick={() => form.setValue("language", language)}
+                  className="capitalize"
                 >
                   {language}
                 </DropdownMenuItem>
