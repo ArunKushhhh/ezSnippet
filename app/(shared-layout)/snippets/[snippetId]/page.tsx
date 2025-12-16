@@ -114,11 +114,11 @@ export default function SnippetPage() {
                 <Button
                   className={`${buttonVariants({
                     variant: "outline",
-                  })} border ${snippet?.isSaved ? "text-chart-2" : null}`}
+                  })} border ${snippet?.isSaved ? "text-chart-2" : "text-foreground"}`}
                   onClick={handleSave}
                 >
                   <Bookmark />
-                  <p className="hidden md:block">
+                  <p className="hidden md:block text-foreground">
                     {snippet?.isSaved ? "Saved" : "Save"}
                   </p>
                 </Button>

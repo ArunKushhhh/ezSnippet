@@ -56,6 +56,7 @@ export function SnippetEditor() {
     openSnippetEditorObject: { openSnippetEditor, setOpenSnippetEditor },
     selectedSnippetObject: { selectedSnippet, setSelectedSnippet },
     allSnippetsObject: { allSnippets, setAllSnippets },
+    updateSnippet,
   } = useGlobalContext();
 
   const form = useForm<SnippetFormValues>({
@@ -85,31 +86,25 @@ export function SnippetEditor() {
     }
   }, [selectedSnippet, form]);
 
-  const onSubmit = (data: SnippetFormValues) => {
+  const onSubmit = async (data: SnippetFormValues) => {
     if (!selectedSnippet) return;
 
-    const updatedSnippet = {
-      ...selectedSnippet,
-      title: data.title,
-      description: data.description,
-      language: data.language,
-      body: data.body,
-      code: data.code,
-      tags: data.tags,
-    };
+    try {
+      await updateSnippet(selectedSnippet.id, {
+        title: data.title,
+        description: data.description,
+        language: data.language,
+        body: data.body,
+        code: data.code,
+        tags: data.tags,
+      });
 
-    // Update in allSnippets
-    const updatedAllSnippets = allSnippets.map((s) =>
-      s.id === selectedSnippet.id ? updatedSnippet : s
-    );
-    setAllSnippets(updatedAllSnippets);
-
-    // Update selectedSnippet
-    setSelectedSnippet(updatedSnippet);
-
-    // Close editor
-    setOpenSnippetEditor(false);
-    setOpenAlertDialog(false);
+      // Close editor
+      setOpenSnippetEditor(false);
+      setOpenAlertDialog(false);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const selectedLanguage = form.watch("language");
