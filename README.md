@@ -103,3 +103,6 @@ ezsnippet/
    ```
 
 5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+CodeRabbit Reviews:
+![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/ArunKushhhh/ezSnippet?utm_source=oss&utm_medium=github&utm_campaign=ArunKushhhh%2FezSnippet&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
