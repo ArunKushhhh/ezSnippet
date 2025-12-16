@@ -19,12 +19,15 @@ import { useGlobalContext } from "@/components/web/context-api";
 import { CopyButton } from "@/components/web/copy-button";
 import { SnippetEditor } from "@/components/web/snippet-editor";
 import { Bookmark, PencilLine, RefreshCw, Trash } from "lucide-react";
+import { useTheme } from "next-themes";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import prism from "react-syntax-highlighter/dist/esm/styles/prism/prism";
 
 export default function SnippetPage() {
+  const { resolvedTheme } = useTheme();
   const { snippetId } = useParams();
   const router = useRouter();
   const {
@@ -96,7 +99,7 @@ export default function SnippetPage() {
         {/* title, desc and created at */}
         <div className="flex flex-col gap-4">
           <h1 className="text-4xl font-semibold">{snippet?.title}</h1>
-          <p className="text-muted-foreground">{snippet?.description}</p>
+          <p className="text-muted-foreground whitespace-pre-wrap">{snippet?.description}</p>
           <Badge variant={snippet?.isTrash ? "destructive" : "outline"}>
             {snippet?.isTrash ? "Deleted At: " : "Created At: "}
             {snippet?.createdAt}
@@ -108,7 +111,7 @@ export default function SnippetPage() {
         {/* explanation */}
         <div className="space-y-4">
           <h1 className="text-2xl font-bold">Explanation / Notes</h1>
-          <p className="whitespace-pre-wrap line-clamp-5 text-muted-foreground">
+          <p className="whitespace-pre-wrap">
             {snippet?.body}
           </p>
         </div>
@@ -243,11 +246,10 @@ export default function SnippetPage() {
         {/* code */}
         <SyntaxHighlighter
           language={snippet?.language}
-          style={prism}
+          style={resolvedTheme === "light" ? prism : vscDarkPlus}
           showLineNumbers
           showInlineLineNumbers
           customStyle={{
-            backgroundColor: "var(--secondary)",
             border: "1px solid var(--border)",
             fontSize: "14px",
             borderRadius: "8px",

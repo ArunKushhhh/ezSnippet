@@ -25,11 +25,14 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { useGlobalContext } from "@/components/web/context-api";
 import { ArrowRight, Bookmark, RefreshCw, Trash } from "lucide-react";
+import { useTheme } from "next-themes";
 import Link from "next/link";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import prism from "react-syntax-highlighter/dist/esm/styles/prism/prism";
 
 export default function SnippetCard({ snippet }: { snippet: Snippet }) {
+  const { resolvedTheme } = useTheme();
   const {
     allSnippetsObject: { allSnippets, setAllSnippets },
   } = useGlobalContext();
@@ -103,14 +106,15 @@ export default function SnippetCard({ snippet }: { snippet: Snippet }) {
           {snippet.body}
         </p>
         <div>
-          <p className="text-xs text-muted-foreground capitalize">{snippet.language}</p>
+          <p className="text-xs text-muted-foreground capitalize">
+            {snippet.language}
+          </p>
           <SyntaxHighlighter
             language={snippet.language}
-            style={prism}
+            style={resolvedTheme === "light" ? prism : vscDarkPlus}
             showLineNumbers
             showInlineLineNumbers
             customStyle={{
-              backgroundColor: "var(--secondary)",
               border: "1px solid var(--border)",
               overflow: "auto",
               display: "-webkit-box",

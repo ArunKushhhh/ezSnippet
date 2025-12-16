@@ -191,10 +191,11 @@ export function SnippetEditor() {
                 render={({ field, fieldState }) => (
                   <Field className="gap-2">
                     <FieldLabel>Description</FieldLabel>
-                    <Input
+                    <Textarea
                       {...field}
                       aria-invalid={fieldState.invalid}
                       placeholder="Snippet Description"
+                      className="min-h-[100px]"
                     />
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
