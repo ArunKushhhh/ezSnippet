@@ -86,12 +86,17 @@ export function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
+              {activeSnippets.length === 0 && (
+                <div className="px-2 py-1 text-xs text-muted-foreground">
+                  No snippets
+                </div>
+              )}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
 
         {/* Saved Snippets */}
-        <SidebarGroup>
+        <SidebarGroup className="px-4 md:px-0">
           <SidebarGroupLabel className="text-primary text-sm hover:text-foreground">
             <Link href="/snippets/saved">Saved</Link>
           </SidebarGroupLabel>
@@ -119,7 +124,7 @@ export function AppSidebar() {
         </SidebarGroup>
 
         {/* Trash */}
-        <SidebarGroup>
+        <SidebarGroup className="px-4 md:px-0">
           <SidebarGroupLabel className="text-primary text-sm hover:text-foreground">
             <Link href="/snippets/trash">Trash</Link>
           </SidebarGroupLabel>

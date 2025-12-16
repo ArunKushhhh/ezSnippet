@@ -30,44 +30,47 @@ import Link from "next/link";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import prism from "react-syntax-highlighter/dist/esm/styles/prism/prism";
+import { useEffect, useState } from "react";
 
 export default function SnippetCard({ snippet }: { snippet: Snippet }) {
   const { resolvedTheme } = useTheme();
-  const {
-    allSnippetsObject: { allSnippets, setAllSnippets },
-  } = useGlobalContext();
+  // State to handle hydration mismatch for themes
+  const [mounted, setMounted] = useState(false);
+  const { updateSnippet, deleteSnippet } = useGlobalContext();
 
-  function handleSave() {
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  async function handleSave() {
     if (snippet.isTrash) return;
-
-    const updatedSnippets = allSnippets.map((s) => {
-      if (s.id === snippet.id) {
-        return { ...s, isSaved: !s.isSaved };
-      }
-      return s;
-    });
-
-    setAllSnippets(updatedSnippets);
+    try {
+      await updateSnippet(snippet.id, { isSaved: !snippet.isSaved });
+    } catch (error) {
+      // already handled in context
+    }
   }
 
-  function handleDelete() {
-    const updatedSnippets = allSnippets.map((s) => {
-      if (s.id === snippet.id) {
-        // If restoring, set isTrash false and verify isSaved is false
-        if (s.isTrash) {
-          return { ...s, isTrash: false, isSaved: false };
-        }
-        // If deleting, set isTrash true and Remove from saved
-        return { ...s, isTrash: true, isSaved: false };
+  async function handleDelete() {
+    try {
+      if (snippet.isTrash) {
+        // Restore: set isTrash false
+        await updateSnippet(snippet.id, { isTrash: false });
+      } else {
+        // Delete: set isTrash true and Remove from saved
+        await updateSnippet(snippet.id, { isTrash: true, isSaved: false });
       }
-      return s;
-    });
-    setAllSnippets(updatedSnippets);
+    } catch (error) {
+      // already handled in context
+    }
   }
 
-  function handleDeleteForever() {
-    const updatedSnippets = allSnippets.filter((s) => s.id !== snippet.id);
-    setAllSnippets(updatedSnippets);
+  async function handleDeleteForever() {
+    try {
+      await deleteSnippet(snippet.id);
+    } catch (error) {
+      // already handled in context
+    }
   }
 
   return (
@@ -84,7 +87,7 @@ export default function SnippetCard({ snippet }: { snippet: Snippet }) {
         <CardDescription>{snippet.description}</CardDescription>
         <Badge variant="outline" className="text-muted-foreground">
           {snippet.isTrash ? "Deleted At: " : "Created At: "}
-          {snippet.createdAt}
+          {new Date(snippet.createdAt).toLocaleDateString()}
         </Badge>
       </CardHeader>
       <Separator />
@@ -111,7 +114,7 @@ export default function SnippetCard({ snippet }: { snippet: Snippet }) {
           </p>
           <SyntaxHighlighter
             language={snippet.language}
-            style={resolvedTheme === "light" ? prism : vscDarkPlus}
+            style={mounted && resolvedTheme === "light" ? prism : vscDarkPlus}
             showLineNumbers
             showInlineLineNumbers
             customStyle={{

@@ -47,7 +47,8 @@ const languages = [
 
 export default function CreateSnippetPage() {
   const {
-    allSnippetsObject: { allSnippets, setAllSnippets },
+    allSnippetsObject: { allSnippets },
+    addSnippet,
   } = useGlobalContext();
   const router = useRouter();
 
@@ -63,22 +64,23 @@ export default function CreateSnippetPage() {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof snippetSchema>) => {
-    const newSnippet = {
-      id: `snippet-${Date.now()}`,
-      title: data.title,
-      description: data.description,
-      language: data.language,
-      body: data.body,
-      code: data.code,
-      tags: data.tags,
-      isSaved: false,
-      isTrash: false,
-      createdAt: new Date().toLocaleDateString(),
-    };
-
-    setAllSnippets([...allSnippets, newSnippet]);
-    router.push("/snippets");
+  const onSubmit = async (data: z.infer<typeof snippetSchema>) => {
+    try {
+      await addSnippet({
+        title: data.title,
+        description: data.description || "",
+        language: data.language,
+        body: data.body || "",
+        code: data.code,
+        tags: data.tags,
+        isSaved: false,
+        isTrash: false,
+      });
+      router.push("/snippets");
+    } catch (error) {
+      // Error handled in context
+      console.log(error);
+    }
   };
 
   const selectedLanguage = form.watch("language");

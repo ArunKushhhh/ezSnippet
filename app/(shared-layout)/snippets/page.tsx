@@ -14,6 +14,7 @@ import { Separator } from "@/components/ui/separator";
 import { useGlobalContext } from "@/components/web/context-api";
 import SnippetCard from "@/components/web/snippet-card";
 import { ArrowUpRightIcon, FolderCode, Plus } from "lucide-react";
+import Link from "next/link";
 
 export default function SnippetsPage() {
   const {
@@ -46,16 +47,21 @@ export default function SnippetsPage() {
             </EmptyHeader>
             <EmptyContent>
               <div className="flex gap-2">
-                <Button>
-                  <Plus />
-                  Create Project
+                <Button asChild>
+                  <Link href="/snippets/create">
+                    <Plus />
+                    Create Project
+                  </Link>
                 </Button>
                 <Button
+                  asChild
                   variant="link"
                   className="text-muted-foreground hover:text-foreground"
                   size="sm"
                 >
-                  Learn More <ArrowUpRightIcon />
+                  <Link href="/">
+                    Learn More <ArrowUpRightIcon />
+                  </Link>
                 </Button>
               </div>
             </EmptyContent>

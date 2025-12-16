@@ -34,6 +34,8 @@ export default function SnippetPage() {
     openSnippetEditorObject: { openSnippetEditor, setOpenSnippetEditor },
     selectedSnippetObject: { selectedSnippet, setSelectedSnippet },
     allSnippetsObject: { allSnippets, setAllSnippets },
+    deleteSnippet,
+    updateSnippet,
   } = useGlobalContext();
 
   const [snippet, setSnippet] = useState<Snippet | undefined>(undefined);
@@ -54,42 +56,26 @@ export default function SnippetPage() {
     }
   }, [selectedSnippet]);
 
-  function handleSave() {
+  async function handleSave() {
     if (!snippet || snippet.isTrash) return;
-
-    const updatedSnippets = allSnippets.map((s) => {
-      if (s.id === snippet.id) {
-        return { ...s, isSaved: !s.isSaved };
-      }
-      return s;
-    });
-
-    setAllSnippets(updatedSnippets);
+    await updateSnippet(snippet.id, { isSaved: !snippet.isSaved });
   }
 
-  function handleDelete() {
+  async function handleDelete() {
     if (!snippet) return;
 
-    const updatedSnippets = allSnippets.map((s) => {
-      if (s.id === snippet.id) {
-        if (s.isTrash) {
-          // Restore
-          return { ...s, isTrash: false, isSaved: false };
-        }
-        // Trash
-        return { ...s, isTrash: true, isSaved: false };
-      }
-      return s;
-    });
-    setAllSnippets(updatedSnippets);
-    // If we just trashed it, user might expect to go back, but staying on page is also fine.
-    // Let's stay on page so they can restore if accident.
+    if (snippet.isTrash) {
+      // Restore
+      await updateSnippet(snippet.id, { isTrash: false, isSaved: false });
+    } else {
+      // Trash
+      await updateSnippet(snippet.id, { isTrash: true, isSaved: false });
+    }
   }
 
-  function handleDeleteForever() {
+  async function handleDeleteForever() {
     if (!snippet) return;
-    const updatedSnippets = allSnippets.filter((s) => s.id !== snippet.id);
-    setAllSnippets(updatedSnippets);
+    await deleteSnippet(snippet.id);
     router.push("/snippets");
   }
 
@@ -99,10 +85,13 @@ export default function SnippetPage() {
         {/* title, desc and created at */}
         <div className="flex flex-col gap-4">
           <h1 className="text-4xl font-semibold">{snippet?.title}</h1>
-          <p className="text-muted-foreground whitespace-pre-wrap">{snippet?.description}</p>
+          <p className="text-muted-foreground whitespace-pre-wrap">
+            {snippet?.description}
+          </p>
           <Badge variant={snippet?.isTrash ? "destructive" : "outline"}>
             {snippet?.isTrash ? "Deleted At: " : "Created At: "}
-            {snippet?.createdAt}
+            {snippet?.createdAt &&
+              new Date(snippet.createdAt).toLocaleDateString()}
           </Badge>
         </div>
 
@@ -111,9 +100,7 @@ export default function SnippetPage() {
         {/* explanation */}
         <div className="space-y-4">
           <h1 className="text-2xl font-bold">Explanation / Notes</h1>
-          <p className="whitespace-pre-wrap">
-            {snippet?.body}
-          </p>
+          <p className="whitespace-pre-wrap">{snippet?.body}</p>
         </div>
 
         <Separator />

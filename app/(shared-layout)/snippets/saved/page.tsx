@@ -12,7 +12,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { useGlobalContext } from "@/components/web/context-api";
 import SnippetCard from "@/components/web/snippet-card";
-import { FolderCode, Plus } from "lucide-react";
+import { ArrowRight, FolderCode } from "lucide-react";
 import Link from "next/link";
 
 export default function SavedSnippets() {
@@ -48,8 +48,8 @@ export default function SavedSnippets() {
             <div className="flex gap-2">
               <Link href="/snippets">
                 <Button>
-                  <Plus />
                   Browse Snippets
+                  <ArrowRight />
                 </Button>
               </Link>
             </div>
