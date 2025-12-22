@@ -17,11 +17,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ezSnippet | Created by Austen",
+  title: "ezSnippy | Created by Austen",
   description:
     "Create, organize, and share reusable code snippets with syntax highlighting, AI-powered explanations, and fast search.",
   icons: {
-    icon: "/ezsnippet.svg",
+    icon: "/ezsnippy.svg",
   },
 };
 

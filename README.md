@@ -1,8 +1,8 @@
-# EzSnippet
+# ezSnippy
 
-EzSnippet is a modern, feature-rich code snippet management tool designed to help developers organize, store, and access their reusable code blocks efficiently. Built with Next.js and MongoDB, it offers a seamless experience with a beautiful UI.
+ezSnippy is a modern, feature-rich code snippet management tool designed to help developers organize, store, and access their reusable code blocks efficiently. Built with Next.js and MongoDB, it offers a seamless experience with a beautiful UI.
 
-![EzSnippet Home](./public/readme/home-darkmode.png)
+![ezSnippy Home](./public/readme/home-darkmode.png)
 
 ## Features
 
@@ -48,7 +48,7 @@ EzSnippet is a modern, feature-rich code snippet management tool designed to hel
 ## Project Structure
 
 ```bash
-ezsnippet/
+ezSnippy/
 ├── app/                    # Next.js app router pages and layouts
 │   ├── (auth)/            # Authentication routes (sign-in, sign-up)
 │   ├── (shared-layout)/   # App routes with shared sidebar layout
@@ -77,8 +77,8 @@ ezsnippet/
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/ArunKushhhh/ezSnippet.git
-   cd ezsnippet
+   git clone https://github.com/ArunKushhhh/ezSnippy.git
+   cd ezSnippy
    ```
 
 2. Install dependencies:
@@ -105,4 +105,4 @@ ezsnippet/
 5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 CodeRabbit Reviews:
-![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/ArunKushhhh/ezSnippet?utm_source=oss&utm_medium=github&utm_campaign=ArunKushhhh%2FezSnippet&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
+![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/ArunKushhhh/ezSnippy?utm_source=oss&utm_medium=github&utm_campaign=ArunKushhhh%2FezSnippy&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)

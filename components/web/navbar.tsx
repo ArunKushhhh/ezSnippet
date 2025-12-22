@@ -20,13 +20,13 @@ export async function Navbar() {
         <Link href={"/"} className="flex items-center gap-2">
           <div className="relative w-8 h-8">
             <Image
-              src={"/ezsnippet.svg"}
-              alt="ezsnippet"
+              src={"/ezsnippy.svg"}
+              alt="ezSnippy"
               fill
               className="object-cover"
             />
           </div>
-          <h1 className="text-xl font-bold hidden md:flex">ezSnippet</h1>
+          <h1 className="text-xl font-bold hidden md:flex">ezSnippy</h1>
         </Link>
 
         {/* nav tabs */}

@@ -1,6 +1,7 @@
 "use client";
 
 import { Snippet } from "@/app/types/types";
+import { useAuth } from "@clerk/nextjs";
 import { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -82,6 +83,7 @@ export default function GlobalContextProvider({
   const [allSnippets, setAllSnippets] = useState<Snippet[]>([]);
   const [selectedSnippet, setSelectedSnippet] = useState<Snippet | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { isSignedIn } = useAuth();
 
   const fetchAllSnippets = async () => {
     setIsLoading(true);
@@ -106,8 +108,10 @@ export default function GlobalContextProvider({
   };
 
   useEffect(() => {
-    fetchAllSnippets();
-  }, []);
+    if (isSignedIn) {
+      fetchAllSnippets();
+    }
+  }, [isSignedIn]);
 
   const addSnippet = async (snippetData: Omit<Snippet, "id" | "createdAt">) => {
     try {

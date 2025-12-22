@@ -15,6 +15,7 @@ import { Tag } from "lucide-react";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { useGlobalContext } from "./context-api";
+import { useAuth } from "@clerk/nextjs";
 
 import { Snippet } from "@/app/types/types";
 
@@ -22,6 +23,12 @@ export function AppSidebar() {
   const {
     allSnippetsObject: { allSnippets },
   } = useGlobalContext();
+  const { isSignedIn } = useAuth();
+
+  // Don't render sidebar content if user is not signed in
+  if (!isSignedIn) {
+    return null;
+  }
 
   // Filter snippets
   const trashSnippets = allSnippets.filter((s: Snippet) => s.isTrash);
@@ -47,7 +54,7 @@ export function AppSidebar() {
   return (
     <Sidebar
       // collapsible="icon"
-      className="mt-17 px-12 py-8 h-[calc(100%-68px)] min-w-1/4 border-none"
+      className="mt-17 px-12 py-8 h-[calc(100%-68px)] border-none"
     >
       <SidebarHeader className="px-4 md:px-0 py-4">
         <Button

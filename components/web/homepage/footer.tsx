@@ -11,9 +11,9 @@ export function Footer() {
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center gap-2">
               <div className="relative flex h-14 w-14 items-center justify-center rounded-lg bg-primary">
-                <Image src="/ezsnippet.svg" alt="Logo" fill />
+                <Image src="/ezSnippy.svg" alt="Logo" fill />
               </div>
-              <span className="text-5xl font-bold">ezSnippet</span>
+              <span className="text-5xl font-bold">ezSnippy</span>
             </Link>
             <p className="mt-4 max-w-xs text-sm text-muted-foreground">
               The collaborative code snippet manager for modern development
@@ -24,11 +24,11 @@ export function Footer() {
 
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 sm:flex-row">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} EZsnippet. All rights reserved.
+            © {new Date().getFullYear()} ezSnippy. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
             <Link
-              href={"https://github.com/ArunKushhhh/ezSnippet"}
+              href={"https://github.com/ArunKushhhh/ezSnippy"}
               className={`flex gap-2 items-center px-4 py-4 ${buttonVariants({
                 variant: "secondary",
               })} group`}

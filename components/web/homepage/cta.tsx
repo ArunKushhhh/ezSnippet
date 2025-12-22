@@ -17,7 +17,7 @@ export function CTA() {
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-lg text-primary-foreground/80">
               Join thousands of developers who save hours every week with
-              EZsnippet.
+              ezSnippy.
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
               {userId ? (
